@@ -1,0 +1,39 @@
+{
+   "name": "cx_marketplace.x.proxy_registry",
+   "version": "1.0.0",
+   "description": "Marketplace, Assets and Registry Contracts for CryptoXpress",
+   "main": "index.js",
+   "scripts": {
+      "test": "hardhat test",
+      "contract-size": "hardhat size-contracts"
+   },
+   "author": "Zeeshan M <zeeshanm1010@gmail.com> (https://instadukan.com/)",
+   "contributors": [
+      {
+         "name": "Nitish Devadiga",
+         "email": "nitishdevadiga@hotmail.com",
+         "url": "https://cryptoxpress.com"
+      }
+   ],
+   "license": "ISC",
+   "devDependencies": {
+      "@nomiclabs/hardhat-ethers": "^2.0.4",
+      "@nomiclabs/hardhat-waffle": "^2.0.1",
+      "@openzeppelin/hardhat-upgrades": "^1.13.0",
+      "chai": "^4.3.6",
+      "ethereum-waffle": "^3.4.0",
+      "ethers": "^5.5.3",
+      "hardhat": "^2.8.3",
+      "hardhat-abi-exporter": "^2.8.0"
+   },
+   "dependencies": {
+      "@nomiclabs/buidler": "^1.4.8",
+      "@nomiclabs/hardhat-etherscan": "^3.0.0",
+      "@openzeppelin/contracts": "^4.4.1",
+      "@openzeppelin/contracts-upgradeable": "^4.4.1",
+      "dotenv": "^16.0.0",
+      "eth-sig-util": "^3.0.1",
+      "hardhat-contract-sizer": "^2.4.0",
+      "truffle-contract-size": "^2.0.1"
+   }
+}
