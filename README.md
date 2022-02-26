@@ -4,6 +4,12 @@
 
 `npx hardhat test`
 
+## Generate ABIs
+
+`npx hardhat clear-abi && npx hardhat export-abi`
+
+Current ABIs can be found [in ./data/abi](data/abi).
+
 ## Deploy Contracts
 
 `npx hardhat run scripts/deployAndInitAll.js --network bscMainNet`
