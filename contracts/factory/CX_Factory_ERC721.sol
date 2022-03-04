@@ -14,7 +14,7 @@ contract CX_Factory_ERC721 is Initializable, CX_Factory {
 
     string public erc721CollectionSymbol;
 
-    event ERC721CollectionCreated(address indexed collection, address indexed owner);
+    event ERC721CollectionCreated(address indexed collection, address indexed owner, string name, string metadataUri);
 
     struct Erc721MintData {
         address to;
@@ -40,7 +40,7 @@ contract CX_Factory_ERC721 is Initializable, CX_Factory {
         CXASSET_ERC721 _erc721 = new CXASSET_ERC721();
         _erc721.initialize(_name, erc721CollectionSymbol, _collectionMedataUri, address(this), proxyRegistryAddress, _owner, _trustedForwarder);
         createdCollections[address(_erc721)] = true;
-        emit ERC721CollectionCreated(address(_erc721), _owner);
+        emit ERC721CollectionCreated(address(_erc721), _owner, _name, _collectionMedataUri);
         return address(_erc721);
     }
 

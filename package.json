@@ -5,7 +5,8 @@
    "main": "index.js",
    "scripts": {
       "test": "hardhat test",
-      "contract-size": "hardhat size-contracts"
+      "contract-size": "hardhat size-contracts",
+      "gen-abi": "hardhat clear-abi && hardhat export-abi"
    },
    "author": "Zeeshan M <zeeshanm1010@gmail.com> (https://instadukan.com/)",
    "contributors": [

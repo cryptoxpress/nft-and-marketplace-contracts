@@ -14,7 +14,7 @@ contract CX_Factory_ERC1155 is Initializable, CX_Factory {
 
     string public erc1155CollectionSymbol;
 
-    event ERC1155CollectionCreated(address indexed collection, address indexed owner);
+    event ERC1155CollectionCreated(address indexed collection, address indexed owner, string name, string metadataUri);
 
     struct Erc1155MintData {
         address to;
@@ -44,7 +44,7 @@ contract CX_Factory_ERC1155 is Initializable, CX_Factory {
         CXASSET_ERC1155 _erc1155 = new CXASSET_ERC1155();
         _erc1155.initialize(_name, erc1155CollectionSymbol, _collectionMedataUri, address(this), proxyRegistryAddress, _owner, _trustedForwarder);
         createdCollections[address(_erc1155)] = true;
-        emit ERC1155CollectionCreated(address(_erc1155), _owner);
+        emit ERC1155CollectionCreated(address(_erc1155), _owner, _name, _collectionMedataUri);
         return address(_erc1155);
     }
 

@@ -37,7 +37,7 @@ Xpress Test Token:
 [0x14671973c4931C3BFf4A9C732cD8ba6447fe1253](https://rinkeby.etherscan.io/address/0x14671973c4931C3BFf4A9C732cD8ba6447fe1253#code)
 
 ERC1155 Factory:
-[0x7E9c6ef8677C0a96A39ec3c589C44e7C5A4a5b9E](https://rinkeby.etherscan.io/address/0x7E9c6ef8677C0a96A39ec3c589C44e7C5A4a5b9E#code)
+[0xc4f61C097f8420706a5fC0FF92F5787e5Ed1B194](https://rinkeby.etherscan.io/address/0xc4f61C097f8420706a5fC0FF92F5787e5Ed1B194#code)
 
 ERC721 Factory:
-[0xB8E09726e6a0eb757bd702B1fbE470856A83308f](https://rinkeby.etherscan.io/address/0xB8E09726e6a0eb757bd702B1fbE470856A83308f#code)
+[0x3ecc16D6C360A5D968ADC737933c38184A698603](https://rinkeby.etherscan.io/address/0x3ecc16D6C360A5D968ADC737933c38184A698603#code)
