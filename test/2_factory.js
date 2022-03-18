@@ -202,6 +202,17 @@ describe('CX Factory', () => {
             token.metadataUri
          );
          expect(await collection.totalMinted()).to.equal(1);
+
+         // check royalty info
+         const salePrice = '69000000000000000000';
+         const [_receiver, _royalty] = await collection.royaltyInfo(
+            token.tokenId,
+            salePrice
+         );
+         const royaltyPercent = _royalty.mul(100).div(salePrice);
+         expect(royaltyPercent?.toString()).to.equal(
+            (token.royalty / 100).toString()
+         );
       });
    });
 
@@ -269,6 +280,17 @@ describe('CX Factory', () => {
             token.metadataUri
          );
          expect(await collection.totalMinted()).to.equal(1);
+
+         // check royalty info
+         const salePrice = '55000000000000000000';
+         const [_receiver, _royalty] = await collection.royaltyInfo(
+            token.tokenId,
+            salePrice
+         );
+         const royaltyPercent = _royalty.mul(100).div(salePrice);
+         expect(royaltyPercent?.toString()).to.equal(
+            (token.royalty / 100).toString()
+         );
       });
    });
 

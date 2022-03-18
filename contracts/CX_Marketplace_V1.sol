@@ -175,27 +175,33 @@ contract CX_Marketplace_V1 is Initializable, OwnableUpgradeable, PausableUpgrade
     }
 
     function setCommissionExclusion(address _address, bool _excluded) public onlyOwner {
+        require(commissionExclusionAccounts[_address] != _excluded, "Current commission exclusion value for address is same as given input");
         commissionExclusionAccounts[_address] = _excluded;
     }
 
     function setCustomCommission(address _address, uint256 _commission) public onlyOwner {
+        require(customCommissionAccounts[_address] != _commission, "Given custom commission already applied to address");
         customCommissionAccounts[_address] = _commission;
     }
 
     function setPaymentTokenAllowed(address token, bool allowed) public onlyOwner {
+        require(allowedPaymentTokens[token] != allowed, "Current value for payment token allowance is same as given input");
         allowedPaymentTokens[token] = allowed;
         emit PaymentTokensModification(token, allowed);
     }
 
     function setTokenBan(address nftContract, uint256 tokenId, bool banned) public onlyOwner {
+        require(bannedTokens[nftContract][tokenId] != banned, "Current value for ban of token is same as given input");
         bannedTokens[nftContract][tokenId] = banned;
         emit TokenBanSet(nftContract, tokenId, banned);
     }
     function setContractBan(address nftContract, bool banned) public onlyOwner {
+        require(bannedContracts[nftContract] != banned, "Current value for ban of contract is same as given input");
         bannedContracts[nftContract] = banned;
         emit ContractBanSet(nftContract, banned);
     }
     function setAccountBan(address account, bool banned) public onlyOwner {
+        require(bannedAccounts[account] != banned, "Current value for ban of account is same as given input");
         bannedAccounts[account] = banned;
         emit AccountBanSet(account, banned);
     }
@@ -225,10 +231,12 @@ contract CX_Marketplace_V1 is Initializable, OwnableUpgradeable, PausableUpgrade
     /**
     * @dev returns false if listing type is none, else true
     */
-    function addresssHasTokenListed(bytes32 _listingId) public view returns (bool) {
+    function addressHasTokenListed(bytes32 _listingId) public view returns (bool) {
         if (listings[_listingId].initialized != true) { return false; }
-        if (listings[_listingId].listingType != LISTING_TYPE.NONE) { return false; }
-        return (listings[_listingId].startTime < _currentTime()) && (listings[_listingId].endTime == 0 || _currentTime() < listings[_listingId].endTime);
+        if (listings[_listingId].listingType == LISTING_TYPE.NONE) { return false; }
+        if (listings[_listingId].startTime > _currentTime()) return false;
+        if (listings[_listingId].listingType == LISTING_TYPE.FIXED_PRICE && (listings[_listingId].endTime != 0 && _currentTime() > listings[_listingId].endTime)) return false;
+        return true;
     }
 
     function getTokenPrice(address nftContract, address owner, uint tokenId) public whenNotPaused view returns (uint) {
@@ -521,7 +529,9 @@ contract CX_Marketplace_V1 is Initializable, OwnableUpgradeable, PausableUpgrade
 
     function _isActive(bytes32 _listingId) internal view {
         require(listings[_listingId].startTime < _currentTime(), "Listing not started");
-        require(listings[_listingId].endTime == 0 || _currentTime() < listings[_listingId].endTime, "Listing has expired");
+        if (listings[_listingId].listingType == LISTING_TYPE.FIXED_PRICE && (listings[_listingId].endTime != 0 && _currentTime() > listings[_listingId].endTime)) {
+            revert('Listing has expired');
+        }
     }
 
     function _checkContractIsERC1155(address _contract) internal view returns (bool) {

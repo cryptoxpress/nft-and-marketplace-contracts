@@ -2076,7 +2076,150 @@ describe('Marketplace and NFTs/SFTs Test', () => {
          ).equal(0);
       });
 
-      it('Should revert buy if listing time has expired', async () => {
+      it('Should return correct responses for addressHasTokenListed function', async () => {
+         const testToken = {
+            to: addr3.address,
+            id: 10,
+            amount: 1,
+            metadataUri: `ipfs://token-10`,
+            royalty: 1200,
+            data: '0x',
+         };
+         // mint
+         await mint(testToken);
+
+         const listingId = await cx_marketplace.computeListingId(
+            cx_sft.address,
+            addr3.address,
+            testToken.id
+         );
+
+         expect(await cx_marketplace.addressHasTokenListed(listingId)).to.be
+            .false;
+
+         let newListingPayload;
+         // list with valid end time as FIXED_PRICE
+         newListingPayload = {
+            tokenId: testToken.id,
+            nftContract: cx_sft.address,
+            price: '12000000000000000000',
+            paymentToken: ZERO_ADDRESS,
+            listQuantity: 1,
+            listingType: LISTING_TYPES.FIXED_PRICE,
+            startTime: 0,
+            endTime: (new Date('2029-01-01').getTime() / 1000).toFixed(0),
+         };
+         await cx_marketplace.connect(addr3).list(newListingPayload);
+         expect(await cx_marketplace.addressHasTokenListed(listingId)).to.be
+            .true;
+
+         // list with valid end time as AUCTION
+         newListingPayload = {
+            tokenId: testToken.id,
+            nftContract: cx_sft.address,
+            price: '12000000000000000000',
+            paymentToken: ZERO_ADDRESS,
+            listQuantity: 1,
+            listingType: LISTING_TYPES.AUCTION,
+            startTime: 0,
+            endTime: (new Date('2029-01-01').getTime() / 1000).toFixed(0),
+         };
+         await cx_marketplace.connect(addr3).list(newListingPayload);
+         expect(await cx_marketplace.addressHasTokenListed(listingId)).to.be
+            .true;
+
+         // list with expired end time as FIXED_PRICE
+         newListingPayload = {
+            tokenId: testToken.id,
+            nftContract: cx_sft.address,
+            price: '12000000000000000000',
+            paymentToken: ZERO_ADDRESS,
+            listQuantity: 1,
+            listingType: LISTING_TYPES.FIXED_PRICE,
+            startTime: 0,
+            endTime: (new Date('2020-01-01').getTime() / 1000).toFixed(0),
+         };
+         await cx_marketplace.connect(addr3).list(newListingPayload);
+         expect(await cx_marketplace.addressHasTokenListed(listingId)).to.be
+            .false;
+
+         // list with expired end time as AUCTION
+         newListingPayload = {
+            tokenId: testToken.id,
+            nftContract: cx_sft.address,
+            price: '12000000000000000000',
+            paymentToken: ZERO_ADDRESS,
+            listQuantity: 1,
+            listingType: LISTING_TYPES.AUCTION,
+            startTime: 0,
+            endTime: (new Date('2020-01-01').getTime() / 1000).toFixed(0),
+         };
+         await cx_marketplace.connect(addr3).list(newListingPayload);
+         expect(await cx_marketplace.addressHasTokenListed(listingId)).to.be
+            .true;
+
+         // list with future start time as FIXED_PRICE
+         newListingPayload = {
+            tokenId: testToken.id,
+            nftContract: cx_sft.address,
+            price: '12000000000000000000',
+            paymentToken: ZERO_ADDRESS,
+            listQuantity: 1,
+            listingType: LISTING_TYPES.FIXED_PRICE,
+            startTime: (new Date('2077-01-01').getTime() / 1000).toFixed(0),
+            endTime: (new Date('2077-02-01').getTime() / 1000).toFixed(0),
+         };
+         await cx_marketplace.connect(addr3).list(newListingPayload);
+         expect(await cx_marketplace.addressHasTokenListed(listingId)).to.be
+            .false;
+
+         // list with future start time as AUCTION
+         newListingPayload = {
+            tokenId: testToken.id,
+            nftContract: cx_sft.address,
+            price: '12000000000000000000',
+            paymentToken: ZERO_ADDRESS,
+            listQuantity: 1,
+            listingType: LISTING_TYPES.AUCTION,
+            startTime: (new Date('2077-01-01').getTime() / 1000).toFixed(0),
+            endTime: (new Date('2077-02-01').getTime() / 1000).toFixed(0),
+         };
+         await cx_marketplace.connect(addr3).list(newListingPayload);
+         expect(await cx_marketplace.addressHasTokenListed(listingId)).to.be
+            .false;
+
+         // list with indefinite end time as FIXED_PRICE
+         newListingPayload = {
+            tokenId: testToken.id,
+            nftContract: cx_sft.address,
+            price: '12000000000000000000',
+            paymentToken: ZERO_ADDRESS,
+            listQuantity: 1,
+            listingType: LISTING_TYPES.FIXED_PRICE,
+            startTime: 0,
+            endTime: 0,
+         };
+         await cx_marketplace.connect(addr3).list(newListingPayload);
+         expect(await cx_marketplace.addressHasTokenListed(listingId)).to.be
+            .true;
+
+         // list with indefinite end time as AUCTION
+         newListingPayload = {
+            tokenId: testToken.id,
+            nftContract: cx_sft.address,
+            price: '12000000000000000000',
+            paymentToken: ZERO_ADDRESS,
+            listQuantity: 1,
+            listingType: LISTING_TYPES.AUCTION,
+            startTime: 0,
+            endTime: 0,
+         };
+         await cx_marketplace.connect(addr3).list(newListingPayload);
+         expect(await cx_marketplace.addressHasTokenListed(listingId)).to.be
+            .true;
+      });
+
+      it('Should revert buy if FIXED_PRICE listing time has expired', async () => {
          const testToken = {
             to: addr3.address,
             id: 421,
@@ -2096,7 +2239,7 @@ describe('Marketplace and NFTs/SFTs Test', () => {
             listQuantity: 2,
             listingType: LISTING_TYPES.FIXED_PRICE,
             startTime: 0,
-            endTime: (new Date('2021-01-01').getTime() / 1000).toFixed(0),
+            endTime: (new Date('2020-01-01').getTime() / 1000).toFixed(0),
          };
 
          // List
@@ -2129,6 +2272,80 @@ describe('Marketplace and NFTs/SFTs Test', () => {
          expect(
             await cx_sft.balanceOf(addr4.address, listingDetails1.tokenId)
          ).equal(0);
+      });
+
+      it('Should allow approved bidder to purchase AUCTION listing even if time has expired', async () => {
+         const testToken = {
+            to: addr3.address,
+            id: 4211,
+            amount: 3,
+            metadataUri: `ipfs://token-4211`,
+            royalty: 1900,
+            data: '0x',
+         };
+         // mint
+         await mint(testToken);
+
+         // list with expired end time
+         const newListingPayload = {
+            tokenId: testToken.id,
+            nftContract: cx_sft.address,
+            price: '12000000000000000000',
+            paymentToken: ZERO_ADDRESS,
+            listQuantity: 2,
+            listingType: LISTING_TYPES.AUCTION,
+            startTime: 0,
+            endTime: (new Date('2020-01-01').getTime() / 1000).toFixed(0),
+         };
+
+         // List
+         await cx_marketplace.connect(addr3).list(newListingPayload);
+
+         const listingDetails1 = await cx_marketplace.getListingDetails(
+            newListingPayload.nftContract,
+            addr3.address,
+            newListingPayload.tokenId
+         );
+
+         const buyAmount = listingDetails1.listedQuantity;
+         const buyPayload = {
+            tokenId: listingDetails1.tokenId,
+            quantity: buyAmount,
+            nftContract: listingDetails1.nftContract,
+            fromAddress: listingDetails1.owner,
+         };
+
+         const bid = ethers.BigNumber.from('15000000000000000000');
+
+         // Buy
+         await expect(
+            cx_marketplace.connect(addr4).buy(buyPayload, {
+               value: listingDetails1.price.mul(buyAmount),
+            })
+         ).to.be.revertedWith('Caller not approved to buy');
+
+         // approve bidder and bid
+         await cx_marketplace
+            .connect(addr3)
+            .updateApprovedBidder(
+               newListingPayload.nftContract,
+               newListingPayload.tokenId,
+               addr4.address,
+               bid,
+               1
+            );
+
+         // Buy after approval
+         await cx_marketplace.connect(addr4).buy(buyPayload, {
+            value: bid.mul(buyAmount),
+         });
+
+         expect(
+            await cx_sft.balanceOf(addr3.address, listingDetails1.tokenId)
+         ).equal(testToken.amount - newListingPayload.listQuantity);
+         expect(
+            await cx_sft.balanceOf(addr4.address, listingDetails1.tokenId)
+         ).equal(newListingPayload.listQuantity);
       });
 
       it('Should revert buy if listing has not started', async () => {

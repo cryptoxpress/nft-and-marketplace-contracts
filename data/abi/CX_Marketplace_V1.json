@@ -385,7 +385,7 @@
         "type": "bytes32"
       }
     ],
-    "name": "addresssHasTokenListed",
+    "name": "addressHasTokenListed",
     "outputs": [
       {
         "internalType": "bool",

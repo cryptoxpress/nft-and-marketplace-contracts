@@ -39,15 +39,15 @@ module.exports = {
    },
    networks: {
       rinkeby: {
-         url: `https://eth-rinkeby.alchemyapi.io/v2/${process.env.ALCHEMY_API_KEY}`,
+         url: `https://speedy-nodes-nyc.moralis.io/d26aff17bbec4491e9ed8cdf/eth/rinkeby`,
          accounts: process.env.RINKEBY ? [`0x${process.env.RINKEBY}`] : [],
       },
       ropsten: {
-         url: `https://ropsten.infura.io/v3/${process.env.INFURA_API_KEY}`,
+         url: `https://speedy-nodes-nyc.moralis.io/d26aff17bbec4491e9ed8cdf/eth/ropsten`,
          accounts: process.env.ROPSTEN ? [`0x${process.env.ROPSTEN}`] : [],
       },
       bscTestNet: {
-         url: 'https://data-seed-prebsc-1-s1.binance.org:8545',
+         url: 'https://speedy-nodes-nyc.moralis.io/d26aff17bbec4491e9ed8cdf/bsc/testnet',
          chainId: 97,
          gasPrice: 20000000000,
          accounts: process.env.BSC_TESTNET
@@ -55,7 +55,7 @@ module.exports = {
             : [],
       },
       bscMainNet: {
-         url: 'https://bsc-dataseed.binance.org',
+         url: 'https://speedy-nodes-nyc.moralis.io/d26aff17bbec4491e9ed8cdf/bsc/mainnet',
          chainId: 56,
          gasPrice: 5000000000,
          accounts: process.env.BSC ? [`0x${process.env.BSC}`] : [],
