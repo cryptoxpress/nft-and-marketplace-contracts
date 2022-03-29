@@ -1,5 +1,8 @@
 const { ethers } = require('hardhat');
 
+// add xpress token address for needed network
+const XPRESS_TOKEN_ADDRESS = '0xaA9826732f3A4973FF8B384B3f4e3c70c2984651';
+
 async function main() {
    const [deployer] = await ethers.getSigners();
 
@@ -54,6 +57,13 @@ async function main() {
       .connect(deployer)
       .initialize('CX Factory NFT', registry.address, forwarder.address);
    console.log('\nERC721 Factory Initialized');
+
+   if (XPRESS_TOKEN_ADDRESS) {
+      await cx_marketplace
+         .connect(deployer)
+         .setPaymentTokenAllowed(XPRESS_TOKEN_ADDRESS, true); // approve xpress token
+      console.log('\nApproved Xpress as Valid Payment Token for Marketplace');
+   }
 
    // ----- END OF INITIALIZATIONS -----
 }
