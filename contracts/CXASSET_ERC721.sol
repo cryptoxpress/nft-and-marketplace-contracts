@@ -12,10 +12,6 @@ import "./ERC2981Upgradeable.sol";
  */
 import "./registry/ProxyRegistry.sol";
 
-/* 
-    Contributors: Nitish Devadiga,  CX
-*/
-
 contract CXASSET_ERC721 is Initializable, ERC721Upgradeable, ERC721BurnableUpgradeable, ERC2981Upgradeable, OwnableAndCollab, ERC2771ContextUpgradeable {
     // contract level metadata
     string private _contractUri;

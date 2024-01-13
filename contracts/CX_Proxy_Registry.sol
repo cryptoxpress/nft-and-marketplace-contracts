@@ -4,10 +4,6 @@ pragma solidity ^0.8.2;
 import "./registry/ProxyRegistry.sol";
 import "./registry/AuthenticatedProxy.sol";
 
-/* 
-    Contributors: Nitish Devadiga,  CX
-*/
-
 contract CX_Proxy_Registry is ProxyRegistry {
 
     string public constant name = "CryptoXpress Proxy Registry";

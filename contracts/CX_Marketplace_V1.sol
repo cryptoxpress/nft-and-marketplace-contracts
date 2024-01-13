@@ -16,10 +16,6 @@ import "./CXERC2771ContextUpgradeable.sol";
 import "./registry/ProxyRegistry.sol";
 import "./registry/AuthenticatedProxy.sol";
 
-/* 
-    Contributors: Nitish Devadiga,  CX
-*/
-
 contract CX_Marketplace_V1 is Initializable, OwnableUpgradeable, PausableUpgradeable, ReentrancyGuardUpgradeable, CXERC2771ContextUpgradeable {
     // Contract name
     string public constant name = "CryptoXpress NFT Marketplace";

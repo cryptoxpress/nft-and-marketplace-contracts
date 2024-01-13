@@ -14,9 +14,6 @@ import "./ERC2981Upgradeable.sol";
  */
 import "./registry/ProxyRegistry.sol";
 
-/* 
-    Contributors: Nitish Devadiga,  CX
-*/
 
 contract CXASSET_ERC1155 is Initializable, ERC1155Upgradeable, ERC2981Upgradeable, OwnableAndCollab, ERC1155BurnableUpgradeable, ERC1155SupplyUpgradeable, ERC2771ContextUpgradeable {
     // Contract name

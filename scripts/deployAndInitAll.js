@@ -15,7 +15,12 @@ async function main() {
    const CXRegistry = await ethers.getContractFactory('CX_Proxy_Registry');
    const registry = await CXRegistry.connect(deployer).deploy();
    console.log(`\nRegistry address -> ${registry.address}`);
-
+   // // verify registry address
+   // const registryVerification = await hre.run("verify:verify", {
+   //    address: registry.address,
+   //    constructorArguments: [],
+   // });
+   // console.log(registryVerification)
    const FORWARDER = await ethers.getContractFactory('MinimalForwarder');
    const forwarder = await FORWARDER.connect(deployer).deploy();
    console.log(`\nForwarder address -> ${forwarder.address}`);
